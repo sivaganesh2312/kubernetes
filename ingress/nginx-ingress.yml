@@ -4,21 +4,21 @@ kind: Ingress
 metadata:
   name: web-ingress
 spec:
-  ingressClassName: nginx
-  rules:
-    - http:
-        paths:
-          - path: /preschool
-            pathType: Prefix
-            backend:      # when somone hits it where to end up
-              service:
-                name: preschool-svc
-                port:
-                  number: 80
-          - path: /skate
-            pathType: Prefix
-            backend:
-              service:
-                name: skate-svc
-                port:
-                  number: 80
+  ingressClassName: nginx          # Specifies that the NGINX Ingress controller should manage this Ingress.
+rules:                             # List of rules to handle HTTP traffic.
+  - http:                          # HTTP traffic rules.
+      paths:                       # Define multiple paths for the same host.
+        - path: /preschool         # Define path /preschool
+          pathType: Prefix         # Match any path starting with /preschool
+          backend:                 # Define where to forward the traffic.
+            service: 
+              name: preschool-svc  # Forward traffic to the preschool-svc service.
+              port:
+                number: 80         # The service is listening on port 80.
+        - path: /skate             # Define path /skate
+          pathType: Prefix         # Match any path starting with /skate
+          backend:                 # Define where to forward the traffic.
+            service: 
+              name: skate-svc      # Forward traffic to the skate-svc service.
+              port:
+                number: 80         # The service is listening on port 80.

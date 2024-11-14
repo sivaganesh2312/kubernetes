@@ -23,9 +23,21 @@ spec:
       containers:
         - name: preschool
           image: ganesh231/preschool:2.0
+          resources:
+            limits:
+              cpu: 250m
+              memory: 128Mi
           ports:
             - containerPort: 80
               protocol: "TCP"
+          readinessProbe:
+            initialDelaySeconds: 3   ##  Wait 3 seconds after the container starts before checking readiness
+            periodSeconds: 5         ## Check readiness every 5 seconds after the initial delay
+            successThreshold: 3      ## Require 3 successful probes to mark the container as ready
+            failureThreshold: 2      ## Require 2 failed probes to mark the container as unready
+            httpGet:
+              path: '/'              ## path: '/' means that Kubernetes will send a GET request to the root URL (e.g., http://<container-ip>:80/). You can change this to any endpoint that is designed to check the health of your service (e.g., /health or /status).
+              port: 80   
 ---
 apiVersion: v1
 kind: Service
